@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 
+import guru.springframework.sfgdi.repositories.EnglishGreetingRepository;
+import guru.springframework.sfgdi.repositories.EnglishGreetingRepositoryImpl;
 import guru.springframework.sfgdi.services.ConstructorGreetingService;
 import guru.springframework.sfgdi.services.I18nEnglishGreetingService;
 import guru.springframework.sfgdi.services.I18nSpanishGreetingService;
@@ -28,10 +30,15 @@ public class GreetingServiceConfig {
 		return new I18nSpanishGreetingService();
 	}
 	
+	@Bean
+	EnglishGreetingRepository englishGreetingRepository() {
+		return new EnglishGreetingRepositoryImpl();
+	}
+	
 //	@Profile("EN")
 	@Bean(name = "i18nService")
-	I18nEnglishGreetingService i18nEnglishService() {
-		return new I18nEnglishGreetingService();
+	I18nEnglishGreetingService i18nEnglishService(EnglishGreetingRepository englishGreetingRepositoryImpl) {
+		return new I18nEnglishGreetingService(englishGreetingRepositoryImpl);
 	}
 	
 	@Primary
